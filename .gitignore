@@ -1,0 +1,7 @@
+.idea/
+*.iml
+*.iws
+/logs/
+/src/test/
+/src/main/resources/
+/target/
