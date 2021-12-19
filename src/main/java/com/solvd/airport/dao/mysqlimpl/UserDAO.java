@@ -26,6 +26,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
     @Override
     public User getEntityById(long id) throws SQLException {
         Connection con = null;
+        Connection con;
         PreparedStatement st = null;
         ResultSet rs = null;
 
