@@ -3,7 +3,6 @@ package com.solvd.airport.utils;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -43,7 +42,7 @@ public class ConnectionPool {
         return instance;
     }
 
-    public synchronized Connection getConnection() throws InterruptedException {
+    public Connection getConnection() throws InterruptedException {
         if (existingConnectionsCount < MAX_POOL_CAPACITY) {
             try {
                 existingConnectionsCount++;
