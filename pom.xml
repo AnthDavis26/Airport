@@ -2,7 +2,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.solvd</groupId>
-    <artifactId>hospital</artifactId>
+    <artifactId>airport</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
     <name>airport</name>
