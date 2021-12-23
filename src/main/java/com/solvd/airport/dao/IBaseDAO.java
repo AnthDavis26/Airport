@@ -6,5 +6,5 @@ public interface IBaseDAO<T> {
     void createEntity(T entity);
     void updateEntity(T entity);
     T getEntityById(long id) throws SQLException;
-    void deleteEntity(long id) throws SQLException;
+    void deleteEntityById(long id) throws SQLException;
 }
