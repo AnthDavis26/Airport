@@ -8,6 +8,7 @@ public class User {
     private String firstName;
     private String lastName;
     private LocalDate birthday;
+    private License license;
 
     public User() {
         super();
@@ -63,6 +64,14 @@ public class User {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public License getLicense() {
+        return license;
+    }
+
+    public void setLicense(License license) {
+        this.license = license;
     }
 
     public int age() {
