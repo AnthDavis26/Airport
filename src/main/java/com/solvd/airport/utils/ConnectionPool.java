@@ -13,7 +13,7 @@ import java.util.concurrent.*;
 public class ConnectionPool {
     private static ConnectionPool instance;
     private static LinkedBlockingQueue<Connection> pool;
-    private static final int MAX_POOL_CAPACITY = 10;
+    private static final int MAX_POOL_CAPACITY = 3;
     private static int existingConnectionsCount = 0;
     private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
     private static String url;
@@ -26,10 +26,13 @@ public class ConnectionPool {
         if (instance == null)
         {
             instance = new ConnectionPool();
+            pool = new LinkedBlockingQueue<>();
+            logger.info("No ConnectionPool instance. Creating now.");
 
             try {
                 InputStream input = new FileInputStream("src/main/resources/db.properties");
                 Properties prop = new Properties();
+                logger.info("Creating database server credentials from properties file.");
                 prop.load(input);
                 url = prop.getProperty("url");
                 user = prop.getProperty("username");
@@ -45,19 +48,30 @@ public class ConnectionPool {
     public Connection getConnection() throws InterruptedException {
         if (existingConnectionsCount < MAX_POOL_CAPACITY)
         {
+            logger.info("No connections pooled. Creating connection now.");
+
             try {
                 existingConnectionsCount++;
+                Class.forName("com.mysql.cj.jdbc.Driver");
                 return DriverManager.getConnection(url, user, password);
             }
-            catch (SQLException e) {
+            catch (Exception e) {
                 logger.error(e);
             }
         }
 
-        return pool.take();
+        logger.info("Retrieving next available connection from pool...");
+        Connection con = pool.take();
+        logger.info("Connection successfully retrieved from pool.");
+
+        return con;
     }
 
     public void releaseConnection(Connection con) {
-        pool.add(con);
+        if (pool.add(con) && pool.size() <= MAX_POOL_CAPACITY)
+            logger.info("Connection successfully pooled.");
+        else
+            logger.error("Connection pooling failed. An external connection may have been " +
+                    "-or is currently attempting to be- added to the pool.");
     }
 }
