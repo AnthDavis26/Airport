@@ -38,7 +38,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             st.setLong(1, id);
             rs = st.executeQuery();
         } catch (Exception e) {
-            logger.info(e);
+            logger.error(e);
         } finally {
             rs.close();
             st.close();
@@ -58,7 +58,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             user.setBirthday(rs.getDate("birthday").toLocalDate());
         }
         catch (Exception e) {
-            logger.info(e);
+            logger.error(e);
         }
 
         return user;
@@ -75,7 +75,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             st.setLong(1, id);
             st.executeUpdate();
         } catch (Exception e) {
-            logger.info(e);
+            logger.error(e);
         } finally {
             st.close();
             ConnectionPool.getInstance().releaseConnection(con);
