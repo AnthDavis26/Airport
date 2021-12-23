@@ -1,6 +1,7 @@
 package com.solvd.airport.models;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 public class User {
     private Long id;
@@ -62,5 +63,9 @@ public class User {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public int age() {
+        return Period.between(birthday, LocalDate.now()).getYears();
     }
 }
