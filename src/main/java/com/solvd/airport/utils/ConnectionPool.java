@@ -1,6 +1,5 @@
 package com.solvd.airport.utils;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.FileInputStream;
@@ -39,11 +38,13 @@ public class ConnectionPool {
                 logger.error(e);
             }
         }
+
         return instance;
     }
 
     public Connection getConnection() throws InterruptedException {
-        if (existingConnectionsCount < MAX_POOL_CAPACITY) {
+        if (existingConnectionsCount < MAX_POOL_CAPACITY)
+        {
             try {
                 existingConnectionsCount++;
                 return DriverManager.getConnection(url, user, password);
