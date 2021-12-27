@@ -48,7 +48,7 @@ public class ConnectionPool {
     public Connection getConnection() throws InterruptedException {
         if (existingConnectionsCount < MAX_POOL_CAPACITY)
         {
-            logger.info("No connections pooled. Creating connection now.");
+            logger.info("No connections pooled. Creating connection.");
 
             try {
                 existingConnectionsCount++;
@@ -60,18 +60,25 @@ public class ConnectionPool {
             }
         }
 
-        logger.info("Retrieving next available connection from pool...");
-        Connection con = pool.take();
-        logger.info("Connection successfully retrieved from pool.");
+        Connection con = null;
+
+        synchronized (pool) {
+            logger.info("Retrieving next available connection from pool...");
+            con = pool.take();
+            logger.info("Connection successfully retrieved from pool.");
+        }
 
         return con;
     }
 
     public void releaseConnection(Connection con) {
-        if (pool.add(con) && pool.size() <= MAX_POOL_CAPACITY)
-            logger.info("Connection successfully pooled.");
-        else
-            logger.error("Connection pooling failed. An external connection may have been " +
-                    "-or is currently attempting to be- added to the pool.");
+        synchronized (pool)
+        {
+            if (pool.add(con) && pool.size() <= MAX_POOL_CAPACITY)
+                logger.info("Connection successfully pooled.");
+            else
+                logger.error("Connection pooling failed. An external connection may have been " +
+                        "-or is currently attempting to be- added to the pool.");
+        }
     }
 }
