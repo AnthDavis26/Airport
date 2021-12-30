@@ -1,18 +1,20 @@
 package com.solvd.airport.models;
 
+import com.solvd.airport.utils.DateAdapter;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.Period;
 
+@XmlRootElement(name="user")
+@XmlType (propOrder = {"id","firstName","lastName","birthday","license"})
 public class User {
     private Long id;
     private String firstName;
     private String lastName;
     private LocalDate birthday;
     private License license;
-
-    public User() {
-        super();
-    }
 
     @Override
     public int hashCode() {
@@ -25,15 +27,13 @@ public class User {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    @Override
     public String toString() {
-        return super.toString();
+        return "id: " + id + ", first name: " + firstName
+                + ", last name: " + lastName + ", birthday: "
+                + birthday + ", license: " + license;
     }
 
+    @XmlAttribute(name="id")
     public Long getId() {
         return id;
     }
@@ -42,6 +42,7 @@ public class User {
         this.id = id;
     }
 
+    @XmlElement(name="firstName")
     public String getFirstName() {
         return firstName;
     }
@@ -50,6 +51,7 @@ public class User {
         this.firstName = firstName;
     }
 
+    @XmlElement(name="lastName")
     public String getLastName() {
         return lastName;
     }
@@ -58,6 +60,7 @@ public class User {
         this.lastName = lastName;
     }
 
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public LocalDate getBirthday() {
         return birthday;
     }
@@ -66,6 +69,7 @@ public class User {
         this.birthday = birthday;
     }
 
+    @XmlElement(name="license")
     public License getLicense() {
         return license;
     }
