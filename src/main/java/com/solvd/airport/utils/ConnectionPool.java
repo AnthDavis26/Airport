@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.*;
 
@@ -78,7 +77,7 @@ public class ConnectionPool {
                 logger.info("Connection successfully pooled.");
             else
                 logger.error("Connection pooling failed. An external connection may have been " +
-                        "-or is currently attempting to be- added to the pool.");
+                        "or is currently attempting to be added to the pool.");
         }
     }
 }
