@@ -20,11 +20,6 @@ public class Service {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    @Override
     public String toString() {
         return super.toString();
     }
