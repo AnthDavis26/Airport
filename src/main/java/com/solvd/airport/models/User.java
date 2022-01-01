@@ -8,13 +8,12 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @XmlRootElement(name="user")
-@XmlType (propOrder = {"id","firstName","lastName","birthday","license"})
+@XmlType (propOrder = {"id","firstName","lastName","birthday"})
 public class User {
     private Long id;
     private String firstName;
     private String lastName;
     private LocalDate birthday;
-    private License license;
 
     @Override
     public int hashCode() {
@@ -30,7 +29,7 @@ public class User {
     public String toString() {
         return "id: " + id + ", first name: " + firstName
                 + ", last name: " + lastName + ", birthday: "
-                + birthday + ", license: " + license;
+                + birthday;
     }
 
     @XmlAttribute(name="id")
@@ -67,15 +66,6 @@ public class User {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
-    }
-
-    @XmlElement(name="license")
-    public License getLicense() {
-        return license;
-    }
-
-    public void setLicense(License license) {
-        this.license = license;
     }
 
     public int age() {
