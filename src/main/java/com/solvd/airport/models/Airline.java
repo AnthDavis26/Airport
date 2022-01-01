@@ -1,5 +1,9 @@
 package com.solvd.airport.models;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="airline")
 public class Airline {
     private Long id;
     private String name;
@@ -24,6 +28,7 @@ public class Airline {
         return super.toString();
     }
 
+    @XmlAttribute(name="id")
     public Long getId() {
         return id;
     }
@@ -32,6 +37,7 @@ public class Airline {
         this.id = id;
     }
 
+    @XmlAttribute(name="name")
     public String getName() {
         return name;
     }
@@ -40,6 +46,7 @@ public class Airline {
         this.name = name;
     }
 
+    @XmlAttribute(name="terminal-id")
     public Long getTerminalId() {
         return terminalId;
     }
