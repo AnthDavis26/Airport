@@ -78,9 +78,4 @@ public class LicenseDAO extends AbstractMySQLDAO implements ILicenseDAO<License>
     public void deleteEntityById(long id) throws SQLException {
 
     }
-
-    @Override
-    public License getLicenseByUserId(Long id) throws SQLException {
-       return getEntityById(new UserDAO().getEntityById(id).getLicense().getId());
-    }
 }
