@@ -29,6 +29,7 @@ public class ConnectionPool {
             logger.info("No ConnectionPool instance. Creating now.");
 
             try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
                 InputStream input = new FileInputStream("src/main/resources/db.properties");
                 Properties prop = new Properties();
                 logger.info("Creating database server credentials from properties file.");
@@ -51,7 +52,6 @@ public class ConnectionPool {
 
             try {
                 existingConnectionsCount++;
-                Class.forName("com.mysql.cj.jdbc.Driver");
                 return DriverManager.getConnection(url, user, password);
             }
             catch (Exception e) {
