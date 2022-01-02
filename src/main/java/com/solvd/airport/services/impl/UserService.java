@@ -30,4 +30,9 @@ public class UserService implements IUserService {
     public List<User> getUsersByAge(int age) throws SQLException {
         return userDAO.getUsersByAge(age);
     }
+
+    @Override
+    public List<User> getAllUsers() throws SQLException {
+        return userDAO.getAllEntities();
+    }
 }
