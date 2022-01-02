@@ -8,12 +8,12 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @XmlRootElement(name="user")
-@XmlType (propOrder = {"id","firstName","lastName","birthday"})
+@XmlType (propOrder = {"id","firstName","lastName","dateOfBirth"})
 public class User {
     private Long id;
     private String firstName;
     private String lastName;
-    private LocalDate birthday;
+    private LocalDate dateOfBirth;
 
     @Override
     public int hashCode() {
@@ -28,8 +28,8 @@ public class User {
     @Override
     public String toString() {
         return "id: " + id + ", first name: " + firstName
-                + ", last name: " + lastName + ", birthday: "
-                + birthday;
+                + ", last name: " + lastName + ", date of birth: "
+                + dateOfBirth;
     }
 
     @XmlAttribute(name="id")
@@ -60,15 +60,15 @@ public class User {
     }
 
     @XmlJavaTypeAdapter(DateAdapter.class)
-    public LocalDate getBirthday() {
-        return birthday;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public int age() {
-        return Period.between(birthday, LocalDate.now()).getYears();
+        return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 }
