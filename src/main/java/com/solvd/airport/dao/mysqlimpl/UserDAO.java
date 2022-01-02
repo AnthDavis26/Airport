@@ -27,6 +27,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             "WHERE last_name=?";
     private static final String GET_USERS_BY_DOB = "SELECT * FROM users " +
             "WHERE date_of_birth=?";
+    private static final String GET_ALL_USERS = "SELECT * FROM users";
     private Connection con;
     private PreparedStatement st;
     private ResultSet rs;
@@ -101,6 +102,28 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             st.close();
             ConnectionPool.getInstance().releaseConnection(con);
         }
+    }
+
+    @Override
+    public List<User> getAllEntities() throws SQLException {
+        List<User> users = new ArrayList<>();
+
+        try {
+            con = ConnectionPool.getInstance().getConnection();
+            st = con.prepareStatement(GET_ALL_USERS);
+            rs = st.executeQuery();
+        } catch (Exception e) {
+            logger.error(e);
+        } finally {
+            while (rs.next())
+                users.add(resultSetToUser(rs));
+
+            rs.close();
+            st.close();
+            ConnectionPool.getInstance().releaseConnection(con);
+        }
+
+        return users;
     }
 
     @Override
