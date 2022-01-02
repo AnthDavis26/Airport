@@ -14,8 +14,33 @@ public class DateAdapter extends XmlAdapter<String, LocalDate> {
     }
 
     @Override
-    public String marshal(LocalDate localDate) throws Exception {
-        return localDate.getMonthValue() + "/" +
-                localDate.getDayOfMonth() + "/" + localDate.getYear();
+    public String marshal(LocalDate localDate) {
+        String day = "";
+        String month = "";
+        String year = "";
+        int temp = localDate.getMonthValue();
+
+        if (temp < 10)
+            day += '0';
+
+        day += temp;
+        temp = localDate.getDayOfMonth();
+
+        if (temp < 10)
+            month += '0';
+
+        month += temp;
+        temp = localDate.getYear();
+
+        if (temp < 10)
+            year += "000";
+        else if (temp < 100)
+            year += "00";
+        else if (temp < 1000)
+            year += "0";
+
+        year += temp;
+
+        return day + "/" + month + "/" + year;
     }
 }
