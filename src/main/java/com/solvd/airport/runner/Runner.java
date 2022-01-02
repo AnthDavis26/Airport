@@ -22,6 +22,7 @@ public class Runner {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
