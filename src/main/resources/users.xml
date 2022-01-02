@@ -1,12 +1,23 @@
+<?xml version="1.0"?>
 <users>
     <user id="1">
         <firstName>Anthony</firstName>
         <lastName>Davis</lastName>
-        <birthday>02/19/1992</birthday>
+        <dateOfBirth>02/19/1992</dateOfBirth>
+    </user>
+    <user id="5">
+        <firstName>James</firstName>
+        <lastName>Kirk</lastName>
+        <dateOfBirth>03/22/2233</dateOfBirth>
     </user>
     <user id="99">
         <firstName>John</firstName>
         <lastName>Smith</lastName>
-        <birthday>01/06/1580</birthday>
+        <dateOfBirth>01/06/1580</dateOfBirth>
+    </user>
+    <user id = "12">
+        <firstName>Acme</firstName>
+        <lastName>Labs</lastName>
+        <dateOfBirth>02/28/3033</dateOfBirth>
     </user>
 </users>
