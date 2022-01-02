@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class LicenseDAO extends AbstractMySQLDAO implements ILicenseDAO<License> {
     private static final Logger logger = LogManager.getLogger(UserDAO.class);
@@ -77,5 +78,11 @@ public class LicenseDAO extends AbstractMySQLDAO implements ILicenseDAO<License>
     @Override
     public void deleteEntityById(long id) throws SQLException {
 
+    }
+
+    @Override
+    public List<License> getAllEntities() throws SQLException {
+        // TODO: Implement getAllEntities in LicenseDAO
+        return null;
     }
 }
