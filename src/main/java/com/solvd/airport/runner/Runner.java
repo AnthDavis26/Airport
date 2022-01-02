@@ -1,43 +1,43 @@
 package com.solvd.airport.runner;
 
-import com.solvd.airport.models.User;
 import com.solvd.airport.models.Users;
-import com.solvd.airport.services.impl.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.io.File;
-import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class Runner {
     private static final Logger logger = LogManager.getLogger(Runner.class);
 
-    public static void main(String args[]) throws InterruptedException,
-            JAXBException, SQLException {
-        User user = new User();
-        user.setId(123L);
-        user.setFirstName("Jean-Luc");
-        user.setLastName("Picard");
-        user.setBirthday(LocalDate.of(2305,07,13));
-        JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
-        Marshaller marshaller = jaxbContext.createMarshaller();
-        marshaller.marshal(user, new File("src/main/resources/userTest.xml"));
+    public static void main(String args[]) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-        jaxbContext = JAXBContext.newInstance(Users.class);
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        Users users = (Users) unmarshaller.unmarshal(new File("src/main/resources/users.xml"));
-        logger.info(users.getUsers());
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema userSchema = schemaFactory.newSchema(new File("src/main/resources/users.xsd"));
+            unmarshaller.setSchema(userSchema);
 
-        UserService us = new UserService();
-        logger.info(us.getUserById(4));
+            Users users = (Users) unmarshaller.unmarshal(new File("src/main/resources/users.xml"));
+            logger.info(users.getUsers());
 
-        us.createUser(user);
+            marshaller.marshal(users, new File("src/main/resources/userTestOutput.xml"));
+            userSchema = schemaFactory.newSchema(new File("src/main/resources/users.xsd"));
+            unmarshaller.setSchema(userSchema);
 
-        logger.info(us.getUserById(10));
+            users = (Users) unmarshaller.unmarshal(new File("src/main/resources/userTestOutput.xml"));
+            logger.info(users.getUsers());
+        } catch (Exception e) {
+            logger.error(e);
+        }
     }
 }
