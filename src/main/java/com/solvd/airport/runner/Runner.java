@@ -31,7 +31,6 @@ public class Runner {
             logger.info(users.getUsers());
 
             marshaller.marshal(users, new File("src/main/resources/userTestOutput.xml"));
-            userSchema = schemaFactory.newSchema(new File("src/main/resources/users.xsd"));
             unmarshaller.setSchema(userSchema);
 
             users = (Users) unmarshaller.unmarshal(new File("src/main/resources/userTestOutput.xml"));
