@@ -20,7 +20,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             "last_name, date_of_birth) VALUES (?,?,?)";
     private static final String UPDATE_USER_BY_ID = "UPDATE users SET first_name=?, " +
             "last_name=?, date_of_birth=? WHERE id=?";
-    private static final String GET_USER_BY_ID = "SELECT * FROM users where id=?";
+    private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE id=?";
     private static final String GET_USERS_BY_AGE = "SELECT * FROM users " +
             "WHERE TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE())=?";
     private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE id=?";
@@ -205,8 +205,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             user.setFirstName(rs.getString("first_name"));
             user.setLastName(rs.getString("last_name"));
             user.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e);
         }
 
