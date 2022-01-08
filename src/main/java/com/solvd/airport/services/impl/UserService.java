@@ -32,6 +32,16 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public List<User> getUsersByFirstName(String firstName) throws SQLException {
+        return userDAO.getUsersByFirstName(firstName);
+    }
+
+    @Override
+    public List<User> getUsersByLastName(String lastName) throws SQLException {
+        return userDAO.getUsersByLastName(lastName);
+    }
+
+    @Override
     public List<User> getAllUsers() throws SQLException {
         return userDAO.getAllEntities();
     }
