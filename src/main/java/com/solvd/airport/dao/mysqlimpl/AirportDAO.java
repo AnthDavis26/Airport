@@ -97,7 +97,7 @@ public class AirportDAO extends AbstractMySQLDAO implements IAirportDAO<Airport>
             }
         };
 
-        getAirportsHelper(runnable).get(0);
+        return getAirportsHelper(runnable).get(0);
     }
 
     @Override
