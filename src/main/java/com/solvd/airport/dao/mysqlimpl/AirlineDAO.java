@@ -22,7 +22,7 @@ public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline>
     private static final String INSERT_AIRLINE = "INSERT INTO airlines (name, terminal_id) " +
             "VALUES(?,?)";
     private static final String UPDATE_AIRLINE_BY_ID = "UPDATE airlines SET name=?, " +
-            "terminal_id=?";
+            "terminal_id=? WHERE id=?";
     private static final String GET_AIRLINE_BY_ID = "SELECT * FROM airlines WHERE id=?";
     private static final String DELETE_AIRLINE_BY_ID = "DELETE FROM airlines WHERE id=?";
     private static final String GET_ALL_AIRLINES = "SELECT * FROM airlines";
@@ -49,6 +49,7 @@ public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline>
                 st = con.prepareStatement(UPDATE_AIRLINE_BY_ID);
                 st.setString(1, airline.getName());
                 st.setLong(2, airline.getTerminalId());
+                st.setLong(3, airline.getId());
             } catch (SQLException e) {
                 logger.error(e);
             }
@@ -168,8 +169,7 @@ public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline>
             airline.setId(rs.getLong("id"));
             airline.setName(rs.getString("name"));
             airline.setTerminalId(rs.getLong("terminal_id"));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e);
         }
 
