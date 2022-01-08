@@ -10,5 +10,7 @@ public interface IUserService {
     User getUserById(long id) throws SQLException;
     void deleteUserById(long id) throws SQLException;
     List<User> getUsersByAge(int age) throws SQLException;
+    List<User> getUsersByFirstName(String firstName) throws SQLException;
+    List<User> getUsersByLastName(String lastName) throws SQLException;
     List<User> getAllUsers() throws SQLException;
 }
