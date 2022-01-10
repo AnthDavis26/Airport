@@ -2,7 +2,6 @@ package com.solvd.airport.dao.mysqlimpl;
 
 import com.solvd.airport.dao.IAirlineDAO;
 import com.solvd.airport.models.Airline;
-import com.solvd.airport.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,10 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline> {
-    private Connection con;
-    private PreparedStatement st;
-    private ResultSet rs;
+public class AirlineDAO extends AbstractMySQLDAO<Airline> implements IAirlineDAO<Airline> {
     private static final Logger logger = LogManager.getLogger(UserDAO.class);
     private static final String GET_AIRLINES_BY_NAME = "SELECT * FROM airlines " +
             "WHERE name=?";
@@ -28,7 +24,7 @@ public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline>
     private static final String GET_ALL_AIRLINES = "SELECT * FROM airlines";
 
     @Override
-    public void createEntity(Airline airline) throws SQLException {
+    public void createEntity(Airline airline) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(INSERT_AIRLINE);
@@ -39,11 +35,11 @@ public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline>
             }
         };
 
-        updateAirlinesHelper(runnable);
+        updateEntitiesHelper(runnable);
     }
 
     @Override
-    public void updateEntity(Airline airline) throws SQLException {
+    public void updateEntity(Airline airline) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(UPDATE_AIRLINE_BY_ID);
@@ -55,11 +51,11 @@ public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline>
             }
         };
 
-        updateAirlinesHelper(runnable);
+        updateEntitiesHelper(runnable);
     }
 
     @Override
-    public List<Airline> getAirlinesByName(String name) throws SQLException {
+    public List<Airline> getAirlinesByName(String name) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_AIRLINES_BY_NAME);
@@ -69,11 +65,11 @@ public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline>
             }
         };
 
-        return getAirlinesHelper(runnable);
+        return getEntitiesHelper(runnable);
     }
 
     @Override
-    public List<Airline> getAirlinesByTerminalId(long id) throws SQLException {
+    public List<Airline> getAirlinesByTerminalId(long id) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_AIRLINES_BY_TERMINAL_ID);
@@ -83,11 +79,11 @@ public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline>
             }
         };
 
-        return getAirlinesHelper(runnable);
+        return getEntitiesHelper(runnable);
     }
 
     @Override
-    public Airline getEntityById(long id) throws SQLException {
+    public Airline getEntityById(long id) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_AIRLINE_BY_ID);
@@ -97,11 +93,11 @@ public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline>
             }
         };
 
-        return getAirlinesHelper(runnable).get(0);
+        return getEntitiesHelper(runnable).get(0);
     }
 
     @Override
-    public void deleteEntityById(long id) throws SQLException {
+    public void deleteEntityById(long id) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(DELETE_AIRLINE_BY_ID);
@@ -111,11 +107,13 @@ public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline>
             }
         };
 
-        updateAirlinesHelper(runnable);
+        updateEntitiesHelper(runnable);
     }
 
     @Override
-    public List<Airline> getAllEntities() throws SQLException {
+    public List<Airline> getAllEntities() {
+        List<Airline> airlines = new ArrayList<>();
+
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_ALL_AIRLINES);
@@ -124,45 +122,17 @@ public class AirlineDAO extends AbstractMySQLDAO implements IAirlineDAO<Airline>
             }
         };
 
-        return getAirlinesHelper(runnable);
-    }
-
-    private void updateAirlinesHelper(Runnable runnable) throws SQLException {
         try {
-            con = ConnectionPool.getInstance().getConnection();
-            runnable.run();
-            st.executeUpdate();
+            airlines = getEntitiesHelper(runnable);
         } catch (Exception e) {
             logger.error(e);
-        } finally {
-            st.close();
-            ConnectionPool.getInstance().releaseConnection(con);
-        }
-    }
-
-    private List<Airline> getAirlinesHelper(Runnable runnable)
-            throws SQLException {
-        List<Airline> airlines = new ArrayList<>();
-
-        try {
-            con = ConnectionPool.getInstance().getConnection();
-            runnable.run();
-            rs = st.executeQuery();
-        } catch (Exception e) {
-            logger.error(e);
-        } finally {
-            while (rs.next())
-                airlines.add(resultSetToAirline(rs));
-
-            rs.close();
-            st.close();
-            ConnectionPool.getInstance().releaseConnection(con);
         }
 
         return airlines;
     }
 
-    private Airline resultSetToAirline(ResultSet rs) {
+    @Override
+    protected Airline resultSetToEntity(ResultSet rs) {
         Airline airline = new Airline();
 
         try {

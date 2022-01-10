@@ -1,5 +1,7 @@
 package com.solvd.airport.models;
 
+import com.solvd.airport.enums.FlightStatus;
+
 public class Flight {
     private Long id;
     private Long scheduleId;
@@ -46,8 +48,8 @@ public class Flight {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(FlightStatus flightStatus) {
+        this.status = flightStatus.getMessage();
     }
 
     public Long getGateId() {

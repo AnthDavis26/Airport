@@ -12,37 +12,37 @@ public class UserService implements IUserService {
     private IUserDAO userDAO = new UserDAO();
 
     @Override
-    public void createUser(User user) throws SQLException {
+    public void createUser(User user) {
         userDAO.createEntity(user);
     }
 
     @Override
-    public User getUserById(long id) throws SQLException {
+    public User getUserById(long id) {
         return (User) userDAO.getEntityById(id);
     }
 
     @Override
-    public void deleteUserById(long id) throws SQLException {
+    public void deleteUserById(long id) {
         userDAO.deleteEntityById(id);
     }
 
     @Override
-    public List<User> getUsersByAge(int age) throws SQLException {
+    public List<User> getUsersByAge(int age) {
         return userDAO.getUsersByAge(age);
     }
 
     @Override
-    public List<User> getUsersByFirstName(String firstName) throws SQLException {
+    public List<User> getUsersByFirstName(String firstName) {
         return userDAO.getUsersByFirstName(firstName);
     }
 
     @Override
-    public List<User> getUsersByLastName(String lastName) throws SQLException {
+    public List<User> getUsersByLastName(String lastName) {
         return userDAO.getUsersByLastName(lastName);
     }
 
     @Override
-    public List<User> getAllUsers() throws SQLException {
+    public List<User> getAllUsers() {
         return userDAO.getAllEntities();
     }
 }

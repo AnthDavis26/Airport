@@ -34,6 +34,7 @@ public class Runner {
             users.setUsers(userService.getAllUsers());
             logger.info(users.getUsers());
             marshaller.marshal(users, new File("src/main/resources/userTestOutput.xml"));
+            userService.deleteUserById(14);
         } catch (Exception e) {
             logger.error(e);
         }

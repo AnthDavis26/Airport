@@ -2,33 +2,26 @@ package com.solvd.airport.dao.mysqlimpl;
 
 import com.solvd.airport.dao.IAirportDAO;
 import com.solvd.airport.models.Airport;
-import com.solvd.airport.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class AirportDAO extends AbstractMySQLDAO implements IAirportDAO<Airport> {
-    private Connection con;
-    private PreparedStatement st;
-    private ResultSet rs;
+public class AirportDAO extends AbstractMySQLDAO<Airport> implements IAirportDAO<Airport> {
     private static final Logger logger = LogManager.getLogger(AirportDAO.class);
     private static final String GET_AIRPORT_BY_ID = "SELECT * FROM airports WHERE id = ?";
     private static final String GET_AIRPORTS_BY_NAME = "SELECT * FROM airports WHERE name = ?";
     private static final String GET_AIRPORTS_BY_IATA = "SELECT * FROM airports WHERE iata = ?";
     private static final String INSERT_AIRPORT = "INSERT INTO airports (name, iata) VALUES(?,?)";
-    private static final String UPDATE_AIRPORT_BY_ID = "UPDATE airports SET name=?, iata=? " +
-            "WHERE id=?";
-    private static final String DELETE_AIRPORT_BY_ID = "DELETE FROM airports WHERE id=?";
+    private static final String UPDATE_AIRPORT_BY_ID = "UPDATE airports SET name = ?, iata = ? " +
+            "WHERE id = ?";
+    private static final String DELETE_AIRPORT_BY_ID = "DELETE FROM airports WHERE id = ?";
     private static final String GET_ALL_AIRPORTS = "SELECT * FROM airports";
 
     @Override
-    public Airport getAirportByName(String name) throws SQLException {
+    public Airport getAirportByName(String name) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_AIRPORTS_BY_NAME);
@@ -38,11 +31,11 @@ public class AirportDAO extends AbstractMySQLDAO implements IAirportDAO<Airport>
             }
         };
 
-        return getAirportsHelper(runnable).get(0);
+        return getEntitiesHelper(runnable).get(0);
     }
 
     @Override
-    public Airport getAirportByIATA(String iata) throws SQLException {
+    public Airport getAirportByIATA(String iata) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_AIRPORTS_BY_IATA);
@@ -52,11 +45,11 @@ public class AirportDAO extends AbstractMySQLDAO implements IAirportDAO<Airport>
             }
         };
 
-        return getAirportsHelper(runnable).get(0);
+        return getEntitiesHelper(runnable).get(0);
     }
 
     @Override
-    public void createEntity(Airport airport) throws SQLException {
+    public void createEntity(Airport airport) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(INSERT_AIRPORT);
@@ -67,11 +60,11 @@ public class AirportDAO extends AbstractMySQLDAO implements IAirportDAO<Airport>
             }
         };
 
-        updateAirportsHelper(runnable);
+        updateEntitiesHelper(runnable);
     }
 
     @Override
-    public void updateEntity(Airport airport) throws SQLException {
+    public void updateEntity(Airport airport) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(UPDATE_AIRPORT_BY_ID);
@@ -83,11 +76,11 @@ public class AirportDAO extends AbstractMySQLDAO implements IAirportDAO<Airport>
             }
         };
 
-        updateAirportsHelper(runnable);
+        updateEntitiesHelper(runnable);
     }
 
     @Override
-    public Airport getEntityById(long id) throws SQLException {
+    public Airport getEntityById(long id) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_AIRPORT_BY_ID);
@@ -97,11 +90,11 @@ public class AirportDAO extends AbstractMySQLDAO implements IAirportDAO<Airport>
             }
         };
 
-        return getAirportsHelper(runnable).get(0);
+        return getEntitiesHelper(runnable).get(0);
     }
 
     @Override
-    public void deleteEntityById(long id) throws SQLException {
+    public void deleteEntityById(long id) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(DELETE_AIRPORT_BY_ID);
@@ -111,11 +104,11 @@ public class AirportDAO extends AbstractMySQLDAO implements IAirportDAO<Airport>
             }
         };
 
-        updateAirportsHelper(runnable);
+        updateEntitiesHelper(runnable);
     }
 
     @Override
-    public List<Airport> getAllEntities() throws SQLException {
+    public List<Airport> getAllEntities() {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_ALL_AIRPORTS);
@@ -124,45 +117,11 @@ public class AirportDAO extends AbstractMySQLDAO implements IAirportDAO<Airport>
             }
         };
 
-        return getAirportsHelper(runnable);
+        return getEntitiesHelper(runnable);
     }
 
-    private void updateAirportsHelper(Runnable runnable) throws SQLException {
-        try {
-            con = ConnectionPool.getInstance().getConnection();
-            runnable.run();
-            st.executeUpdate();
-        } catch (Exception e) {
-            logger.error(e);
-        } finally {
-            st.close();
-            ConnectionPool.getInstance().releaseConnection(con);
-        }
-    }
-
-    private List<Airport> getAirportsHelper(Runnable runnable)
-            throws SQLException {
-        List<Airport> airports = new ArrayList<>();
-
-        try {
-            con = ConnectionPool.getInstance().getConnection();
-            runnable.run();
-            rs = st.executeQuery();
-        } catch (Exception e) {
-            logger.error(e);
-        } finally {
-            while (rs.next())
-                airports.add(resultSetToAirport(rs));
-
-            rs.close();
-            st.close();
-            ConnectionPool.getInstance().releaseConnection(con);
-        }
-
-        return airports;
-    }
-
-    private Airport resultSetToAirport(ResultSet rs) {
+    @Override
+    protected Airport resultSetToEntity(ResultSet rs) {
         Airport airport = new Airport();
 
         try {

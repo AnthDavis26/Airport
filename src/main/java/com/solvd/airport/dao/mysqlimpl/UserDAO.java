@@ -2,19 +2,14 @@ package com.solvd.airport.dao.mysqlimpl;
 
 import com.solvd.airport.dao.IUserDAO;
 import com.solvd.airport.models.User;
-import com.solvd.airport.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
-    private Connection con;
-    private PreparedStatement st;
-    private ResultSet rs;
+public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
     private static final Logger logger = LogManager.getLogger(UserDAO.class);
     private static final String INSERT_USER = "INSERT INTO users (first_name, " +
             "last_name, date_of_birth) VALUES (?,?,?)";
@@ -33,7 +28,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
     private static final String GET_ALL_USERS = "SELECT * FROM users";
 
     @Override
-    public void createEntity(User user) throws SQLException {
+    public void createEntity(User user) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(INSERT_USER);
@@ -45,11 +40,11 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             }
         };
 
-        updateUsersHelper(runnable);
+        updateEntitiesHelper(runnable);
     }
 
     @Override
-    public void updateEntity(User user) throws SQLException {
+    public void updateEntity(User user) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(UPDATE_USER_BY_ID);
@@ -62,12 +57,12 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             }
         };
 
-        updateUsersHelper(runnable);
+        updateEntitiesHelper(runnable);
     }
 
 
     @Override
-    public User getEntityById(long id) throws SQLException {
+    public User getEntityById(long id) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_USER_BY_ID);
@@ -77,11 +72,11 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             }
         };
 
-        return getUsersHelper(runnable).get(0);
+        return getEntitiesHelper(runnable).get(0);
     }
 
     @Override
-    public void deleteEntityById(long id) throws SQLException {
+    public void deleteEntityById(long id) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(DELETE_USER_BY_ID);
@@ -91,11 +86,11 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             }
         };
 
-        updateUsersHelper(runnable);
+        updateEntitiesHelper(runnable);
     }
 
     @Override
-    public List<User> getAllEntities() throws SQLException {
+    public List<User> getAllEntities() {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_ALL_USERS);
@@ -104,11 +99,11 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             }
         };
 
-        return getUsersHelper(runnable);
+        return getEntitiesHelper(runnable);
     }
 
     @Override
-    public List<User> getUsersByFirstName(String firstName) throws SQLException {
+    public List<User> getUsersByFirstName(String firstName) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_USERS_BY_FIRST_NAME);
@@ -118,11 +113,11 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             }
         };
 
-        return getUsersHelper(runnable);
+        return getEntitiesHelper(runnable);
     }
 
     @Override
-    public List<User> getUsersByLastName(String LastName) throws SQLException {
+    public List<User> getUsersByLastName(String LastName) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_USERS_BY_LAST_NAME);
@@ -132,11 +127,11 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             }
         };
 
-        return getUsersHelper(runnable);
+        return getEntitiesHelper(runnable);
     }
 
     @Override
-    public List<User> getUsersByDOB(LocalDate dob) throws SQLException {
+    public List<User> getUsersByDOB(LocalDate dob) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_USERS_BY_DOB);
@@ -146,11 +141,11 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             }
         };
 
-        return getUsersHelper(runnable);
+        return getEntitiesHelper(runnable);
     }
 
     @Override
-    public List<User> getUsersByAge(int age) throws SQLException {
+    public List<User> getUsersByAge(int age) {
         Runnable runnable = () -> {
             try {
                 st = con.prepareStatement(GET_USERS_BY_AGE);
@@ -160,44 +155,11 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO<User> {
             }
         };
 
-        return getUsersHelper(runnable);
+        return getEntitiesHelper(runnable);
     }
 
-    private List<User> getUsersHelper(Runnable runnable) throws SQLException {
-        List<User> users = new ArrayList<>();
-
-        try {
-            con = ConnectionPool.getInstance().getConnection();
-            runnable.run();
-            st.executeQuery();
-        } catch (Exception e) {
-            logger.error(e);
-        } finally {
-            while (rs.next())
-                users.add(resultSetToUser(rs));
-
-            rs.close();
-            st.close();
-            ConnectionPool.getInstance().releaseConnection(con);
-        }
-
-        return users;
-    }
-
-    private void updateUsersHelper(Runnable runnable) throws SQLException {
-        try {
-            con = ConnectionPool.getInstance().getConnection();
-            runnable.run();
-            st.executeUpdate();
-        } catch (Exception e) {
-            logger.error(e);
-        } finally {
-            st.close();
-            ConnectionPool.getInstance().releaseConnection(con);
-        }
-    }
-
-    private User resultSetToUser(ResultSet rs) {
+    @Override
+    protected User resultSetToEntity(ResultSet rs) {
         User user = new User();
 
         try {

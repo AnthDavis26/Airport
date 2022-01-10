@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IUserDAO<T> extends IBaseDAO<T> {
-    List<T> getUsersByFirstName(String firstName) throws SQLException;
-    List<User> getUsersByLastName(String lastName) throws SQLException;
-    List<T> getUsersByDOB(LocalDate dob) throws SQLException;
-    List<T> getUsersByAge(int age) throws SQLException;
+    List<T> getUsersByFirstName(String firstName);
+    List<User> getUsersByLastName(String lastName);
+    List<T> getUsersByDOB(LocalDate dob);
+    List<T> getUsersByAge(int age);
 }
