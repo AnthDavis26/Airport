@@ -5,7 +5,6 @@ import com.solvd.airport.dao.mysqlimpl.UserDAO;
 import com.solvd.airport.models.User;
 import com.solvd.airport.services.IUserService;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class UserService implements IUserService {

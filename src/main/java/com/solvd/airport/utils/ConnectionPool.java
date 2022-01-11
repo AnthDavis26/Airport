@@ -2,12 +2,13 @@ package com.solvd.airport.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
-import java.util.concurrent.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class ConnectionPool {
     private static ConnectionPool instance;

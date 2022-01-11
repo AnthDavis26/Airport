@@ -5,7 +5,8 @@ import com.solvd.airport.models.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.List;
 

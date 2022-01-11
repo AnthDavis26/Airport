@@ -2,7 +2,6 @@ package com.solvd.airport.dao;
 
 import com.solvd.airport.models.User;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 

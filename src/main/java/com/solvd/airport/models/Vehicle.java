@@ -4,7 +4,7 @@ public class Vehicle {
     private Long id;
     private Long userId;
     private Long airlineId;
-    private Integer passengerCapacity;
+    private Long passengerCapacity;
 
     public Vehicle() {
         super();
@@ -49,11 +49,11 @@ public class Vehicle {
         this.airlineId = airlineId;
     }
 
-    public Integer getPassengerCapacity() {
+    public Long getPassengerCapacity() {
         return passengerCapacity;
     }
 
-    public void setPassengerCapacity(Integer passengerCapacity) {
+    public void setPassengerCapacity(Long passengerCapacity) {
         this.passengerCapacity = passengerCapacity;
     }
 }

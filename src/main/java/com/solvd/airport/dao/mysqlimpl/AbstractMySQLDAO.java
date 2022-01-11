@@ -18,9 +18,6 @@ abstract class AbstractMySQLDAO<T> {
         Logger logger = LogManager.getLogger(this.getClass());
 
         try {
-            logger.info("test");
-            logger.info(con);
-            logger.info(this.con);
             this.con = ConnectionPool.getInstance().getConnection();
             runnable.run();
             this.st.executeUpdate();
