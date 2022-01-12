@@ -5,14 +5,25 @@ import com.solvd.airport.dao.mysqlimpl.UserDAO;
 import com.solvd.airport.models.User;
 import com.solvd.airport.services.IUserService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class UserService implements IUserService {
     private IUserDAO userDAO = new UserDAO();
 
     @Override
-    public void createUser(User user) {
+    public void create(User user) {
         userDAO.createEntity(user);
+    }
+
+    @Override
+    public void delete(User user) {
+        userDAO.deleteEntityById(user.getId());
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userDAO.getAllEntities();
     }
 
     @Override
@@ -40,8 +51,9 @@ public class UserService implements IUserService {
         return userDAO.getUsersByLastName(lastName);
     }
 
+
     @Override
-    public List<User> getAllUsers() {
-        return userDAO.getAllEntities();
+    public List<User> getUsersByDateOfBirth(LocalDate dob) {
+        return userDAO.getUsersByDOB(dob);
     }
 }
