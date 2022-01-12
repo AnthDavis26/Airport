@@ -2,6 +2,13 @@ package com.solvd.airport.models;
 
 import com.solvd.airport.enums.FlightStatus;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name="flight")
+@XmlType(propOrder = {"id","schedule-id","status","gate-id","vehicle-id"})
 public class Flight {
     private Long id;
     private Long scheduleId;
@@ -28,6 +35,7 @@ public class Flight {
         return super.toString();
     }
 
+    @XmlAttribute(name="id")
     public Long getId() {
         return id;
     }
@@ -36,6 +44,7 @@ public class Flight {
         this.id = id;
     }
 
+    @XmlElement(name="schedule-id")
     public Long getScheduleId() {
         return scheduleId;
     }
@@ -44,6 +53,7 @@ public class Flight {
         this.scheduleId = scheduleId;
     }
 
+    @XmlElement(name="status")
     public String getStatus() {
         return status;
     }
@@ -52,6 +62,7 @@ public class Flight {
         this.status = flightStatus.getMessage();
     }
 
+    @XmlElement(name="gate-id")
     public Long getGateId() {
         return gateId;
     }
@@ -60,6 +71,7 @@ public class Flight {
         this.gateId = gateId;
     }
 
+    @XmlElement(name="vehicle-id")
     public Long getVehicleId() {
         return vehicleId;
     }

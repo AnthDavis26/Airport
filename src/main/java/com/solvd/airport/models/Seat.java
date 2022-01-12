@@ -1,5 +1,12 @@
 package com.solvd.airport.models;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name="seat")
+@XmlType(propOrder = {"id","vehicle-id"})
 public class Seat {
     private Long id;
     private Long vehicleId;
@@ -23,6 +30,7 @@ public class Seat {
         return super.toString();
     }
 
+    @XmlAttribute(name="id")
     public Long getId() {
         return id;
     }
@@ -31,6 +39,7 @@ public class Seat {
         this.id = id;
     }
 
+    @XmlElement(name="vehicle-id")
     public Long getVehicleId() {
         return vehicleId;
     }

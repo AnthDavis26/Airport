@@ -1,7 +1,15 @@
 package com.solvd.airport.models;
 
+import com.solvd.airport.utils.DateTimeAdapter;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
 
+@XmlRootElement(name="schedule")
+@XmlType(propOrder = {"id","arrival","departure"})
 public class Schedule {
     private Long id;
     private LocalDateTime arrival;
@@ -26,6 +34,7 @@ public class Schedule {
         return super.toString();
     }
 
+    @XmlAttribute(name="id")
     public Long getId() {
         return id;
     }
@@ -34,6 +43,7 @@ public class Schedule {
         this.id = id;
     }
 
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     public LocalDateTime getArrival() {
         return arrival;
     }
@@ -42,6 +52,7 @@ public class Schedule {
         this.arrival = arrival;
     }
 
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     public LocalDateTime getDeparture() {
         return departure;
     }
