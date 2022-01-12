@@ -2,15 +2,14 @@ package com.solvd.airport.services;
 
 import com.solvd.airport.models.User;
 
-import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
-public interface IUserService {
-    void createUser(User user) throws SQLException;
-    User getUserById(long id) throws SQLException;
-    void deleteUserById(long id) throws SQLException;
-    List<User> getUsersByAge(int age) throws SQLException;
-    List<User> getUsersByFirstName(String firstName) throws SQLException;
-    List<User> getUsersByLastName(String lastName) throws SQLException;
-    List<User> getAllUsers() throws SQLException;
+public interface IUserService extends IBaseService<User> {
+    User getUserById(long id);
+    void deleteUserById(long id);
+    List<User> getUsersByAge(int age);
+    List<User> getUsersByFirstName(String firstName);
+    List<User> getUsersByLastName(String lastName);
+    List<User> getUsersByDateOfBirth(LocalDate dob);
 }
