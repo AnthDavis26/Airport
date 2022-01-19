@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class BaggageDAO extends AbstractMySQLDAO<Baggage> implements IBaggageDAO<Baggage> {
-    private static final Logger logger = LogManager.getLogger(BaggageDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(BaggageDAO.class);
     private static final String GET_BAGGAGE_BY_ID = "SELECT * FROM baggage WHERE id = ?";
     private static final String GET_BAGGAGE_BY_PASSENGER_ID = "SELECT * FROM baggage WHERE passenger_id = ?";
     private static final String INSERT_BAGGAGE = "INSERT INTO baggage (passenger_id) VALUES(?)";
@@ -25,7 +25,7 @@ public class BaggageDAO extends AbstractMySQLDAO<Baggage> implements IBaggageDAO
                 st = con.prepareStatement(GET_BAGGAGE_BY_PASSENGER_ID);
                 st.setLong(1, id);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -38,7 +38,7 @@ public class BaggageDAO extends AbstractMySQLDAO<Baggage> implements IBaggageDAO
             try {
                 st = con.prepareStatement(INSERT_BAGGAGE);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -53,7 +53,7 @@ public class BaggageDAO extends AbstractMySQLDAO<Baggage> implements IBaggageDAO
                 st.setLong(1, baggage.getPassengerId());
                 st.setLong(2, baggage.getId());
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -66,7 +66,7 @@ public class BaggageDAO extends AbstractMySQLDAO<Baggage> implements IBaggageDAO
             try {
                 st = con.prepareStatement(GET_BAGGAGE_BY_ID);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -80,7 +80,7 @@ public class BaggageDAO extends AbstractMySQLDAO<Baggage> implements IBaggageDAO
                 st = con.prepareStatement(DELETE_BAGGAGE_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -93,7 +93,7 @@ public class BaggageDAO extends AbstractMySQLDAO<Baggage> implements IBaggageDAO
             try {
                 st = con.prepareStatement(GET_ALL_BAGGAGE);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -108,7 +108,7 @@ public class BaggageDAO extends AbstractMySQLDAO<Baggage> implements IBaggageDAO
             baggage.setId(rs.getLong("id"));
             baggage.setPassengerId(rs.getLong("passenger_id"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return baggage;

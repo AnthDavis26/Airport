@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AirlineDAO extends AbstractMySQLDAO<Airline> implements IAirlineDAO<Airline> {
-    private static final Logger logger = LogManager.getLogger(UserDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
     private static final String GET_AIRLINES_BY_NAME = "SELECT * FROM airlines " +
             "WHERE name=?";
     private static final String GET_AIRLINES_BY_TERMINAL_ID = "SELECT * FROM airlines " +
@@ -32,7 +32,7 @@ public class AirlineDAO extends AbstractMySQLDAO<Airline> implements IAirlineDAO
                 st.setString(1, airline.getName());
                 st.setLong(2, airline.getTerminalId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -48,7 +48,7 @@ public class AirlineDAO extends AbstractMySQLDAO<Airline> implements IAirlineDAO
                 st.setLong(2, airline.getTerminalId());
                 st.setLong(3, airline.getId());
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -62,7 +62,7 @@ public class AirlineDAO extends AbstractMySQLDAO<Airline> implements IAirlineDAO
                 st = con.prepareStatement(GET_AIRLINES_BY_NAME);
                 st.setString(1, name);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -76,7 +76,7 @@ public class AirlineDAO extends AbstractMySQLDAO<Airline> implements IAirlineDAO
                 st = con.prepareStatement(GET_AIRLINES_BY_TERMINAL_ID);
                 st.setLong(1, id);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -90,7 +90,7 @@ public class AirlineDAO extends AbstractMySQLDAO<Airline> implements IAirlineDAO
                 st = con.prepareStatement(GET_AIRLINE_BY_ID);
                 st.setLong(1, id);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -104,7 +104,7 @@ public class AirlineDAO extends AbstractMySQLDAO<Airline> implements IAirlineDAO
                 st = con.prepareStatement(DELETE_AIRLINE_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -119,14 +119,14 @@ public class AirlineDAO extends AbstractMySQLDAO<Airline> implements IAirlineDAO
             try {
                 st = con.prepareStatement(GET_ALL_AIRLINES);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
         try {
             airlines = getEntitiesHelper(runnable);
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return airlines;
@@ -141,7 +141,7 @@ public class AirlineDAO extends AbstractMySQLDAO<Airline> implements IAirlineDAO
             airline.setName(rs.getString("name"));
             airline.setTerminalId(rs.getLong("terminal_id"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return airline;

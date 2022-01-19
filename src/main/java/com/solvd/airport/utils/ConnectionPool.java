@@ -8,17 +8,20 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ConnectionPool {
     private static ConnectionPool instance;
-    private static LinkedBlockingQueue<Connection> pool;
-    private static final int MAX_POOL_CAPACITY = 3;
-    private static int existingConnectionsCount = 0;
-    private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
+    private static BlockingQueue<Connection> pool;
+    private static final int MAX_POOL_CAPACITY = 10;
+    private static Integer existingConnectionsCount = 0;
+    private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
     private static String url;
     private static String user;
     private static String password;
+    private static final String DB_PROPERTIES_DIRECTORY = "src/main/resources";
 
     private ConnectionPool(){} // Prevent construction
 
@@ -26,20 +29,23 @@ public class ConnectionPool {
         if (instance == null)
         {
             instance = new ConnectionPool();
-            pool = new LinkedBlockingQueue<>();
-            logger.info("No ConnectionPool instance. Creating now.");
+            pool = new ArrayBlockingQueue<>(MAX_POOL_CAPACITY);
+            LOGGER.info("No connection pool initialized. Creating now.");
 
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                InputStream input = new FileInputStream("src/main/resources/db.properties");
+                InputStream input = new FileInputStream(DB_PROPERTIES_DIRECTORY + "/db.properties");
                 Properties prop = new Properties();
-                logger.info("Creating database server credentials from properties file.");
+                LOGGER.info("Creating database server credentials from properties file in " +
+                        DB_PROPERTIES_DIRECTORY + ".");
                 prop.load(input);
                 url = prop.getProperty("url");
                 user = prop.getProperty("username");
                 password = prop.getProperty("password");
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
+            } finally {
+                LOGGER.info("Connection pool initialized.");
             }
         }
 
@@ -47,38 +53,34 @@ public class ConnectionPool {
     }
 
     public Connection getConnection() throws InterruptedException {
-        if (existingConnectionsCount < MAX_POOL_CAPACITY)
-        {
-            logger.info("No connections pooled. Creating connection.");
+        synchronized (existingConnectionsCount) {
+            LOGGER.info("Connection pool capacity: " + existingConnectionsCount + "/" + MAX_POOL_CAPACITY + ".");
 
-            try {
-                existingConnectionsCount++;
-                return DriverManager.getConnection(url, user, password);
-            }
-            catch (Exception e) {
-                logger.error(e);
+            if (existingConnectionsCount < MAX_POOL_CAPACITY) {
+                LOGGER.info("Creating new connection.");
+
+                try {
+                    existingConnectionsCount++;
+                    return DriverManager.getConnection(url, user, password);
+                } catch (Exception e) {
+                    LOGGER.error(e);
+                }
             }
         }
 
-        Connection con = null;
-
-        synchronized (pool) {
-            logger.info("Retrieving next available connection from pool...");
-            con = pool.take();
-            logger.info("Connection successfully retrieved from pool.");
-        }
-
-        return con;
+        LOGGER.info("Retrieved connection from pool.");
+        return pool.take();
     }
 
     public void releaseConnection(Connection con) {
-        synchronized (pool)
-        {
-            if (pool.add(con) && pool.size() <= MAX_POOL_CAPACITY)
-                logger.info("Connection successfully pooled.");
-            else
-                logger.error("Connection pooling failed. An external connection may have been " +
-                        "or is currently attempting to be added to the pool.");
+        synchronized (existingConnectionsCount) {
+            if (pool.offer(con)) {
+                while (existingConnectionsCount < pool.size())
+                    existingConnectionsCount++;
+
+                LOGGER.info("Connection added to connection pool.");
+            } else
+                LOGGER.error("Connection release failed; connection pool is full.");
         }
     }
 }

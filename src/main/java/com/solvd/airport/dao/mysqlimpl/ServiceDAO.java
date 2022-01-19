@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public class ServiceDAO extends AbstractMySQLDAO<Service> implements IServiceDAO<Service> {
-    private static final Logger logger = LogManager.getLogger(ServiceDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(ServiceDAO.class);
     private static final String INSERT_SERVICE = "INSERT INTO services (name, transaction_id) " +
             "VALUES (?,?)";
     private static final String UPDATE_SERVICE_BY_ID = "UPDATE services SET name=?, transaction_id=? " +
@@ -26,7 +26,7 @@ public class ServiceDAO extends AbstractMySQLDAO<Service> implements IServiceDAO
                 st.setString(1, service.getName());
                 st.setLong(2, service.getTransactionId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -42,7 +42,7 @@ public class ServiceDAO extends AbstractMySQLDAO<Service> implements IServiceDAO
                 st.setLong(2, service.getTransactionId());
                 st.setLong(3, service.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -56,7 +56,7 @@ public class ServiceDAO extends AbstractMySQLDAO<Service> implements IServiceDAO
                 st = con.prepareStatement(GET_SERVICE_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -71,7 +71,7 @@ public class ServiceDAO extends AbstractMySQLDAO<Service> implements IServiceDAO
                 st = con.prepareStatement(DELETE_SERVICE_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -84,7 +84,7 @@ public class ServiceDAO extends AbstractMySQLDAO<Service> implements IServiceDAO
             try {
                 st = con.prepareStatement(GET_ALL_SERVICES);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -100,7 +100,7 @@ public class ServiceDAO extends AbstractMySQLDAO<Service> implements IServiceDAO
             service.setName(rs.getString("name"));
             service.setTransactionId(rs.getLong("transaction_id"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return service;

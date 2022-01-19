@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class TicketDAO extends AbstractMySQLDAO<Ticket> implements ITicketDAO<Ticket> {
-    private static final Logger logger = LogManager.getLogger(TicketDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(TicketDAO.class);
     private static final String INSERT_TICKET = "INSERT INTO tickets (user_id, transaction_id, " +
             "flight_id, seat_id) VALUES (?,?,?)";
     private static final String GET_TICKET_BY_ID = "SELECT * FROM tickets WHERE id=?";
@@ -29,7 +29,7 @@ public class TicketDAO extends AbstractMySQLDAO<Ticket> implements ITicketDAO<Ti
                 st.setLong(3, ticket.getFlightId());
                 st.setLong(4, ticket.getSeatId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -47,7 +47,7 @@ public class TicketDAO extends AbstractMySQLDAO<Ticket> implements ITicketDAO<Ti
                 st.setLong(4, ticket.getSeatId());
                 st.setLong(5, ticket.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -61,7 +61,7 @@ public class TicketDAO extends AbstractMySQLDAO<Ticket> implements ITicketDAO<Ti
                 st = con.prepareStatement(GET_TICKET_BY_ID);
                 st.setLong(1, id);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -75,7 +75,7 @@ public class TicketDAO extends AbstractMySQLDAO<Ticket> implements ITicketDAO<Ti
                 st = con.prepareStatement(DELETE_TICKET_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -88,7 +88,7 @@ public class TicketDAO extends AbstractMySQLDAO<Ticket> implements ITicketDAO<Ti
             try {
                 st = con.prepareStatement(GET_ALL_TICKETS);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -106,7 +106,7 @@ public class TicketDAO extends AbstractMySQLDAO<Ticket> implements ITicketDAO<Ti
             ticket.setTransactionId(rs.getLong("transaction_id"));
             ticket.setUserId(rs.getLong("user_id"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return ticket;

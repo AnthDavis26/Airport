@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public class PassengerDAO extends AbstractMySQLDAO<Passenger> implements IPassengerDAO<Passenger> {
-    private static final Logger logger = LogManager.getLogger(PassengerDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(PassengerDAO.class);
     private static final String GET_PASSENGER_BY_ID = "SELECT * FROM passengers WHERE id=?";
     private static final String GET_PASSENGER_BY_USER_ID = "SELECT * FROM passengers WHERE user_id=?";
     private static final String GET_PASSENGER_BY_FLIGHT_ID = "SELECT * FROM passengers WHERE flight_id=?";
@@ -27,7 +27,7 @@ public class PassengerDAO extends AbstractMySQLDAO<Passenger> implements IPassen
                 st.setLong(1, passenger.getUserId());
                 st.setLong(2, passenger.getFlightId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -43,7 +43,7 @@ public class PassengerDAO extends AbstractMySQLDAO<Passenger> implements IPassen
                 st.setLong(2, passenger.getFlightId());
                 st.setLong(3, passenger.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -57,7 +57,7 @@ public class PassengerDAO extends AbstractMySQLDAO<Passenger> implements IPassen
                 st = con.prepareStatement(GET_PASSENGER_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -71,7 +71,7 @@ public class PassengerDAO extends AbstractMySQLDAO<Passenger> implements IPassen
                 st = con.prepareStatement(DELETE_PASSENGER_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -84,7 +84,7 @@ public class PassengerDAO extends AbstractMySQLDAO<Passenger> implements IPassen
             try {
                 st = con.prepareStatement(GET_ALL_PASSENGERS);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -100,7 +100,7 @@ public class PassengerDAO extends AbstractMySQLDAO<Passenger> implements IPassen
             passenger.setFlightId(rs.getLong("flight_id"));
             passenger.setUserId(rs.getLong("user_id"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return passenger;

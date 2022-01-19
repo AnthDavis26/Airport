@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ScreeningDAO extends AbstractMySQLDAO<Screening> implements IScreeningDAO<Screening> {
-    private static final Logger logger = LogManager.getLogger(ScreeningDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(ScreeningDAO.class);
     private static final String GET_SCREENING_BY_ID = "SELECT * FROM screenings WHERE id=?";
     private static final String GET_ALL_SCREENINGS = "SELECT * FROM screenings";
     private static final String INSERT_SCREENING = "INSERT INTO screenings (terminal_id, baggage_id, " +
@@ -28,7 +28,7 @@ public class ScreeningDAO extends AbstractMySQLDAO<Screening> implements IScreen
                 st.setLong(2, screening.getBaggageId());
                 st.setString(3, screening.getResult());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -45,7 +45,7 @@ public class ScreeningDAO extends AbstractMySQLDAO<Screening> implements IScreen
                 st.setString(3, screening.getResult());
                 st.setLong(4, screening.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -59,7 +59,7 @@ public class ScreeningDAO extends AbstractMySQLDAO<Screening> implements IScreen
                 st = con.prepareStatement(GET_SCREENING_BY_ID);
                 st.setLong(1, id);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -73,7 +73,7 @@ public class ScreeningDAO extends AbstractMySQLDAO<Screening> implements IScreen
                 st = con.prepareStatement(DELETE_SCREENING_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -86,7 +86,7 @@ public class ScreeningDAO extends AbstractMySQLDAO<Screening> implements IScreen
             try {
                 st = con.prepareStatement(GET_ALL_SCREENINGS);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -103,7 +103,7 @@ public class ScreeningDAO extends AbstractMySQLDAO<Screening> implements IScreen
             screening.setTerminalId(rs.getLong("terminal_id"));
             screening.setBaggageId(rs.getLong("baggage_id"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return screening;

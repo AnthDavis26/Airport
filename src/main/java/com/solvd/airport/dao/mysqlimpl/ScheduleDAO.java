@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class ScheduleDAO extends AbstractMySQLDAO<Schedule> implements IScheduleDAO<Schedule> {
-    private static final Logger logger = LogManager.getLogger(ScheduleDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(ScheduleDAO.class);
     private static final String INSERT_SCHEDULE = "INSERT INTO schedules (arrival, departure) VALUES (?,?)";;
     private static final String UPDATE_SCHEDULE_BY_ID = "UPDATE schedules SET arrival=?, departure=? WHERE id=?";
     private static final String GET_SCHEDULE_BY_ID = "SELECT * FROM schedules WHERE id=?";
@@ -26,7 +26,7 @@ public class ScheduleDAO extends AbstractMySQLDAO<Schedule> implements ISchedule
                 st.setTimestamp(1, Timestamp.valueOf(schedule.getArrival()));
                 st.setTimestamp(2, Timestamp.valueOf(schedule.getDeparture()));
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -42,7 +42,7 @@ public class ScheduleDAO extends AbstractMySQLDAO<Schedule> implements ISchedule
                 st.setTimestamp(2, Timestamp.valueOf(schedule.getDeparture()));
                 st.setLong(3, schedule.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -56,7 +56,7 @@ public class ScheduleDAO extends AbstractMySQLDAO<Schedule> implements ISchedule
                 st = con.prepareStatement(GET_SCHEDULE_BY_ID);
                 st.setLong(1, id);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -70,7 +70,7 @@ public class ScheduleDAO extends AbstractMySQLDAO<Schedule> implements ISchedule
                 st = con.prepareStatement(DELETE_SCHEDULE_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -83,7 +83,7 @@ public class ScheduleDAO extends AbstractMySQLDAO<Schedule> implements ISchedule
             try {
                 st = con.prepareStatement(GET_ALL_SCHEDULES);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -99,7 +99,7 @@ public class ScheduleDAO extends AbstractMySQLDAO<Schedule> implements ISchedule
             schedule.setArrival(rs.getTimestamp("arrival").toLocalDateTime());
             schedule.setDeparture(rs.getTimestamp("departure").toLocalDateTime());
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return schedule;

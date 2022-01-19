@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
-    private static final Logger logger = LogManager.getLogger(UserDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
     private static final String INSERT_USER = "INSERT INTO users (first_name, " +
             "last_name, date_of_birth) VALUES (?,?,?)";
     private static final String UPDATE_USER_BY_ID = "UPDATE users SET first_name=?, " +
@@ -37,7 +37,7 @@ public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
                 st.setString(2, user.getLastName());
                 st.setDate(3, Date.valueOf(user.getDateOfBirth()));
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -54,7 +54,7 @@ public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
                 st.setDate(3, Date.valueOf(user.getDateOfBirth()));
                 st.setLong(4, user.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -69,7 +69,7 @@ public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
                 st = con.prepareStatement(GET_USER_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -83,7 +83,7 @@ public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
                 st = con.prepareStatement(DELETE_USER_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -96,7 +96,7 @@ public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
             try {
                 st = con.prepareStatement(GET_ALL_USERS);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -110,7 +110,7 @@ public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
                 st = con.prepareStatement(GET_USERS_BY_FIRST_NAME);
                 st.setString(1, firstName);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -124,7 +124,7 @@ public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
                 st = con.prepareStatement(GET_USERS_BY_LAST_NAME);
                 st.setString(1, LastName);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -138,7 +138,7 @@ public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
                 st = con.prepareStatement(GET_USERS_BY_DOB);
                 st.setDate(1, Date.valueOf(dob));
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -152,7 +152,7 @@ public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
                 st = con.prepareStatement(GET_USERS_BY_AGE);
                 st.setInt(1, age);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -169,7 +169,7 @@ public class UserDAO extends AbstractMySQLDAO<User> implements IUserDAO<User> {
             user.setLastName(rs.getString("last_name"));
             user.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return user;

@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public class FlightDAO extends AbstractMySQLDAO<Flight> implements IFlightDAO<Flight> {
-    private static final Logger logger = LogManager.getLogger(FlightDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(FlightDAO.class);
     private static final String INSERT_FLIGHT = "INSERT INTO flights (schedule_id, status, " +
             "gate_id, vehicle_id) VALUES(?,?,?,?)";
     private static final String UPDATE_FLIGHT_BY_ID = "UPDATE flights schedule_id=?, status=?, " +
@@ -31,7 +31,7 @@ public class FlightDAO extends AbstractMySQLDAO<Flight> implements IFlightDAO<Fl
                 st.setLong(3, flight.getGateId());
                 st.setLong(4, flight.getVehicleId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -49,7 +49,7 @@ public class FlightDAO extends AbstractMySQLDAO<Flight> implements IFlightDAO<Fl
                 st.setLong(4, flight.getVehicleId());
                 st.setLong(5, flight.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -63,7 +63,7 @@ public class FlightDAO extends AbstractMySQLDAO<Flight> implements IFlightDAO<Fl
                 st = con.prepareStatement(GET_FLIGHT_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -77,7 +77,7 @@ public class FlightDAO extends AbstractMySQLDAO<Flight> implements IFlightDAO<Fl
                 st = con.prepareStatement(DELETE_FLIGHT_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -90,7 +90,7 @@ public class FlightDAO extends AbstractMySQLDAO<Flight> implements IFlightDAO<Fl
             try {
                 st = con.prepareStatement(GET_ALL_FLIGHTS);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -104,7 +104,7 @@ public class FlightDAO extends AbstractMySQLDAO<Flight> implements IFlightDAO<Fl
                 st = con.prepareStatement(GET_FLIGHTS_BY_STATUS);
                 st.setString(1, flightStatus.getMessage());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -118,7 +118,7 @@ public class FlightDAO extends AbstractMySQLDAO<Flight> implements IFlightDAO<Fl
                 st = con.prepareStatement(GET_FLIGHTS_BY_SCHEDULE_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -143,7 +143,7 @@ public class FlightDAO extends AbstractMySQLDAO<Flight> implements IFlightDAO<Fl
             flight.setGateId(rs.getLong("gate_id"));
             flight.setVehicleId(rs.getLong("vehicle_id"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return flight;

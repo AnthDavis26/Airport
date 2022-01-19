@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,24 +16,30 @@ abstract class AbstractMySQLDAO<T> {
     protected Connection con = null;
 
     protected void updateEntitiesHelper(Runnable runnable) {
-        Logger logger = LogManager.getLogger(this.getClass());
+        final Logger LOGGER = LogManager.getLogger(this.getClass());
+        this.st = null;
 
         try {
             this.con = ConnectionPool.getInstance().getConnection();
             runnable.run();
             this.st.executeUpdate();
-            this.st.close();
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         } finally {
+            try {
+                this.st.close();
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
+
             ConnectionPool.getInstance().releaseConnection(this.con);
         }
     }
 
     protected List<T> getEntitiesHelper(Runnable runnable) {
         List<T> entities = new ArrayList<>();
-        Logger logger = LogManager.getLogger(this.getClass());
-        ResultSet rs;
+        final Logger LOGGER = LogManager.getLogger(this.getClass());
+        ResultSet rs = null;
 
         try {
             this.con = ConnectionPool.getInstance().getConnection();
@@ -42,11 +49,17 @@ abstract class AbstractMySQLDAO<T> {
             while (rs.next())
                 entities.add(resultSetToEntity(rs));
 
-            rs.close();
-            this.st.close();
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         } finally {
+
+            try {
+                this.st.close();
+                rs.close();
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
+
             ConnectionPool.getInstance().releaseConnection(this.con);
         }
 

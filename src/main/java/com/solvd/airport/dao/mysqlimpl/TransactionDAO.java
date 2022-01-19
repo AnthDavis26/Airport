@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TransactionDAO extends AbstractMySQLDAO<Transaction>
         implements ITransactionDAO<Transaction> {
-    private static final Logger logger = LogManager.getLogger(TransactionDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(TransactionDAO.class);
     private static final String INSERT_TRANSACTION = "INSERT INTO transactions (user_id) VALUES (?)";
     private static final String GET_TRANSACTION_BY_ID = "SELECT * FROM transactions WHERE id=?";
     private static final String GET_ALL_TRANSACTIONS = "SELECT * FROM transactions";
@@ -25,7 +25,7 @@ public class TransactionDAO extends AbstractMySQLDAO<Transaction>
                 st = con.prepareStatement(INSERT_TRANSACTION);
                 st.setLong(1, transaction.getUserId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -40,7 +40,7 @@ public class TransactionDAO extends AbstractMySQLDAO<Transaction>
                 st.setLong(1, transaction.getUserId());
                 st.setLong(2, transaction.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -54,7 +54,7 @@ public class TransactionDAO extends AbstractMySQLDAO<Transaction>
                 st = con.prepareStatement(GET_TRANSACTION_BY_ID);
                 st.setLong(1, id);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -68,7 +68,7 @@ public class TransactionDAO extends AbstractMySQLDAO<Transaction>
                 st = con.prepareStatement(DELETE_TRANSACTION_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -81,7 +81,7 @@ public class TransactionDAO extends AbstractMySQLDAO<Transaction>
             try {
                 st = con.prepareStatement(GET_ALL_TRANSACTIONS);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -96,7 +96,7 @@ public class TransactionDAO extends AbstractMySQLDAO<Transaction>
             transaction.setId(rs.getLong("id"));
             transaction.setUserId(rs.getLong("user_id"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return transaction;

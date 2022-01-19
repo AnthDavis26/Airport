@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class VehicleDAO extends AbstractMySQLDAO<Vehicle> implements IVehicleDAO<Vehicle> {
-    private static final Logger logger = LogManager.getLogger(VehicleDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(VehicleDAO.class);
     private static final String INSERT_VEHICLE = "INSERT INTO vehicles (user_id, airline_id, " +
             "passenger_capacity) VALUES (?,?,?)";
     private static final String GET_VEHICLE_BY_ID = "SELECT * FROM vehicles WHERE id=?";
@@ -29,7 +29,7 @@ public class VehicleDAO extends AbstractMySQLDAO<Vehicle> implements IVehicleDAO
                 st.setLong(2, vehicle.getAirlineId());
                 st.setLong(3, vehicle.getPassengerCapacity());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -46,7 +46,7 @@ public class VehicleDAO extends AbstractMySQLDAO<Vehicle> implements IVehicleDAO
                 st.setLong(3, vehicle.getPassengerCapacity());
                 st.setLong(4, vehicle.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -60,7 +60,7 @@ public class VehicleDAO extends AbstractMySQLDAO<Vehicle> implements IVehicleDAO
                 st = con.prepareStatement(GET_VEHICLE_BY_ID);
                 st.setLong(1, id);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -74,7 +74,7 @@ public class VehicleDAO extends AbstractMySQLDAO<Vehicle> implements IVehicleDAO
                 st = con.prepareStatement(DELETE_VEHICLE_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -87,7 +87,7 @@ public class VehicleDAO extends AbstractMySQLDAO<Vehicle> implements IVehicleDAO
             try {
                 st = con.prepareStatement(GET_ALL_VEHICLES);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -105,7 +105,7 @@ public class VehicleDAO extends AbstractMySQLDAO<Vehicle> implements IVehicleDAO
             vehicle.setUserId(rs.getLong("user_id"));
             vehicle.setPassengerCapacity(rs.getLong("passenger_capacity"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return vehicle;

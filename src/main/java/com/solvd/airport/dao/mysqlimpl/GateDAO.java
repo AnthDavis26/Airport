@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public class GateDAO extends AbstractMySQLDAO<Gate> implements IGateDAO<Gate> {
-    private static final Logger logger = LogManager.getLogger(GateDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(GateDAO.class);
     private static final String INSERT_GATE = "INSERT INTO gates (name, terminal_id) VALUES (?,?)";
     private static final String UPDATE_GATE_BY_ID = "UPDATE gates SET name=?, terminal_id=? WHERE id=?";
     private static final String GET_GATE_BY_ID = "SELECT * FROM gates WHERE id=?";
@@ -24,7 +24,7 @@ public class GateDAO extends AbstractMySQLDAO<Gate> implements IGateDAO<Gate> {
                 st.setString(1, gate.getName());
                 st.setLong(2, gate.getTerminalId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -40,7 +40,7 @@ public class GateDAO extends AbstractMySQLDAO<Gate> implements IGateDAO<Gate> {
                 st.setLong(2, gate.getTerminalId());
                 st.setLong(3, gate.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -54,7 +54,7 @@ public class GateDAO extends AbstractMySQLDAO<Gate> implements IGateDAO<Gate> {
                 st = con.prepareStatement(GET_GATE_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -68,7 +68,7 @@ public class GateDAO extends AbstractMySQLDAO<Gate> implements IGateDAO<Gate> {
                 st = con.prepareStatement(DELETE_GATE_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -81,7 +81,7 @@ public class GateDAO extends AbstractMySQLDAO<Gate> implements IGateDAO<Gate> {
             try {
                 st = con.prepareStatement(GET_ALL_GATES);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -97,7 +97,7 @@ public class GateDAO extends AbstractMySQLDAO<Gate> implements IGateDAO<Gate> {
             gate.setName(rs.getString("name"));
             gate.setTerminalId(rs.getLong("terminal_id"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return gate;

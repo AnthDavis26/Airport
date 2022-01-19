@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class TerminalDAO extends AbstractMySQLDAO<Terminal> implements ITerminalDAO<Terminal> {
-    private static final Logger logger = LogManager.getLogger(TerminalDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(TerminalDAO.class);
     private static final String INSERT_TERMINAL = "INSERT INTO terminals (name) VALUES (?)";
     private static final String GET_TERMINAL_BY_ID = "SELECT * FROM terminals WHERE id=?";
     private static final String GET_ALL_TERMINALS = "SELECT * FROM terminals";
@@ -24,7 +24,7 @@ public class TerminalDAO extends AbstractMySQLDAO<Terminal> implements ITerminal
                 st = con.prepareStatement(INSERT_TERMINAL);
                 st.setString(1, terminal.getName());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -39,7 +39,7 @@ public class TerminalDAO extends AbstractMySQLDAO<Terminal> implements ITerminal
                 st.setString(1, terminal.getName());
                 st.setLong(2, terminal.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -53,7 +53,7 @@ public class TerminalDAO extends AbstractMySQLDAO<Terminal> implements ITerminal
                 st = con.prepareStatement(GET_TERMINAL_BY_ID);
                 st.setLong(1, id);
             } catch (SQLException e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -67,7 +67,7 @@ public class TerminalDAO extends AbstractMySQLDAO<Terminal> implements ITerminal
                 st = con.prepareStatement(DELETE_TERMINAL_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -80,7 +80,7 @@ public class TerminalDAO extends AbstractMySQLDAO<Terminal> implements ITerminal
             try {
                 st = con.prepareStatement(GET_ALL_TERMINALS);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -95,7 +95,7 @@ public class TerminalDAO extends AbstractMySQLDAO<Terminal> implements ITerminal
             terminal.setId(rs.getLong("id"));
             terminal.setName(rs.getString("name"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return terminal;

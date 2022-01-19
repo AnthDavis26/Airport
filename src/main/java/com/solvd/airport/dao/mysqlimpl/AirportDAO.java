@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public class AirportDAO extends AbstractMySQLDAO<Airport> implements IAirportDAO<Airport> {
-    private static final Logger logger = LogManager.getLogger(AirportDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(AirportDAO.class);
     private static final String GET_AIRPORT_BY_ID = "SELECT * FROM airports WHERE id = ?";
     private static final String GET_AIRPORTS_BY_NAME = "SELECT * FROM airports WHERE name = ?";
     private static final String GET_AIRPORTS_BY_IATA = "SELECT * FROM airports WHERE iata = ?";
@@ -26,7 +26,7 @@ public class AirportDAO extends AbstractMySQLDAO<Airport> implements IAirportDAO
                 st = con.prepareStatement(GET_AIRPORTS_BY_NAME);
                 st.setString(1, name);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -40,7 +40,7 @@ public class AirportDAO extends AbstractMySQLDAO<Airport> implements IAirportDAO
                 st = con.prepareStatement(GET_AIRPORTS_BY_IATA);
                 st.setString(1, iata);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -55,7 +55,7 @@ public class AirportDAO extends AbstractMySQLDAO<Airport> implements IAirportDAO
                 st.setString(1, airport.getName());
                 st.setString(2, airport.getIATA());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -71,7 +71,7 @@ public class AirportDAO extends AbstractMySQLDAO<Airport> implements IAirportDAO
                 st.setString(2, airport.getIATA());
                 st.setLong(3, airport.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -85,7 +85,7 @@ public class AirportDAO extends AbstractMySQLDAO<Airport> implements IAirportDAO
                 st = con.prepareStatement(GET_AIRPORT_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -99,7 +99,7 @@ public class AirportDAO extends AbstractMySQLDAO<Airport> implements IAirportDAO
                 st = con.prepareStatement(DELETE_AIRPORT_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -112,7 +112,7 @@ public class AirportDAO extends AbstractMySQLDAO<Airport> implements IAirportDAO
             try {
                 st = con.prepareStatement(GET_ALL_AIRPORTS);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -128,7 +128,7 @@ public class AirportDAO extends AbstractMySQLDAO<Airport> implements IAirportDAO
             airport.setName(rs.getString("name"));
             airport.setIATA(rs.getString("iata"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return airport;

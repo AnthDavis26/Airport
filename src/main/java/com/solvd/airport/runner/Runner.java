@@ -1,7 +1,9 @@
 package com.solvd.airport.runner;
 
+import com.solvd.airport.dao.mysqlimpl.UserDAO;
 import com.solvd.airport.models.Users;
 import com.solvd.airport.services.impl.UserService;
+import com.solvd.airport.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,9 +14,10 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.sql.Connection;
 
 public class Runner {
-    private static final Logger logger = LogManager.getLogger(Runner.class);
+    private static final Logger LOGGER = LogManager.getLogger(Runner.class);
 
     public static void main(String args[]) {
         try {
@@ -27,14 +30,14 @@ public class Runner {
             Schema userSchema = schemaFactory.newSchema(new File("src/main/resources/users.xsd"));
             unmarshaller.setSchema(userSchema);
 
-            UserService userService = new UserService();
             Users users = new Users();
-            users.setUsers(userService.getAllUsers());
-            logger.info(users.getUsers());
+            UserDAO userDAO = new UserDAO();
+            users.setUsers(userDAO.getAllEntities());
+            LOGGER.info(users.getUsers());
             marshaller.marshal(users, new File("src/main/resources/userTestOutput.xml"));
-            userService.deleteUserById(14);
+            userDAO.deleteEntityById(14);
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
     }
 }

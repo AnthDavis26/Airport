@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public class LicenseDAO extends AbstractMySQLDAO<License> implements ILicenseDAO<License> {
-    private static final Logger logger = LogManager.getLogger(UserDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
     private static final String GET_LICENSE_BY_ID = "SELECT * FROM licenses WHERE id=?";
     private static final String CREATE_LICENSE = "INSERT INTO licenses (users_id) VALUES(?)";
     private static final String UPDATE_LICENSE_BY_ID = "UPDATE licenses SET users_id=? WHERE id=?";
@@ -23,7 +23,7 @@ public class LicenseDAO extends AbstractMySQLDAO<License> implements ILicenseDAO
                 st = con.prepareStatement(CREATE_LICENSE);
                 st.setLong(1, license.getUserId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -38,7 +38,7 @@ public class LicenseDAO extends AbstractMySQLDAO<License> implements ILicenseDAO
                 st.setLong(1, license.getUserId());
                 st.setLong(2, license.getId());
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -52,7 +52,7 @@ public class LicenseDAO extends AbstractMySQLDAO<License> implements ILicenseDAO
                 st = con.prepareStatement(GET_LICENSE_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -66,7 +66,7 @@ public class LicenseDAO extends AbstractMySQLDAO<License> implements ILicenseDAO
                 st = con.prepareStatement(DELETE_LICENSE_BY_ID);
                 st.setLong(1, id);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -79,7 +79,7 @@ public class LicenseDAO extends AbstractMySQLDAO<License> implements ILicenseDAO
             try {
                 st = con.prepareStatement(GET_ALL_LICENSES);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         };
 
@@ -94,7 +94,7 @@ public class LicenseDAO extends AbstractMySQLDAO<License> implements ILicenseDAO
             license.setId(rs.getLong("id"));
             license.setUserId(rs.getLong("user_id"));
         } catch (Exception e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return license;
