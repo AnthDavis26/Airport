@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 public class Transaction {
     private Long id;
     private long userId;
+    private long serviceId;
 
     public Transaction() {
         super();
@@ -46,5 +47,15 @@ public class Transaction {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+
+    @XmlElement(name="service-id")
+    public long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(long serviceId) {
+        this.serviceId = serviceId;
     }
 }

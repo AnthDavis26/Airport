@@ -2,11 +2,13 @@ package com.solvd.airport.dao.mysqlimpl;
 
 import com.solvd.airport.dao.ITransactionDAO;
 import com.solvd.airport.models.Transaction;
+import com.solvd.airport.models.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionDAO extends AbstractMySQLDAO<Transaction>
@@ -17,6 +19,7 @@ public class TransactionDAO extends AbstractMySQLDAO<Transaction>
     private static final String GET_ALL_TRANSACTIONS = "SELECT * FROM transactions";
     private static final String UPDATE_TRANSACTION_BY_ID = "UPDATE transactions SET user_id=? WHERE id=?";
     private static final String DELETE_TRANSACTION_BY_ID = "DELETE FROM transactions WHERE id=?";
+    private static final String GET_TRANSACTIONS_BY_USER_ID = "SELECT * FROM transactions WHERE user_id=?";
 
     @Override
     public void createEntity(Transaction transaction) {
@@ -100,5 +103,19 @@ public class TransactionDAO extends AbstractMySQLDAO<Transaction>
         }
 
         return transaction;
+    }
+
+    @Override
+    public List<Transaction> getTransactionsByUserID(long id) {
+        Runnable runnable = () -> {
+            try {
+                st = con.prepareStatement(GET_TRANSACTIONS_BY_USER_ID);
+                st.setLong(1, id);
+            } catch (SQLException e) {
+                LOGGER.error(e);
+            }
+        };
+
+        return getEntitiesHelper(runnable);
     }
 }
