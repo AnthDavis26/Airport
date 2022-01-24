@@ -16,7 +16,7 @@ public class ConnectionPool {
     private static ConnectionPool instance;
     private static BlockingQueue<Connection> pool;
     private static final int MAX_POOL_CAPACITY = 10;
-    private static Integer existingConnectionsCount = 0;
+    private static Integer poolCount = 0;
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
     private static String url;
     private static String user;
@@ -53,14 +53,13 @@ public class ConnectionPool {
     }
 
     public Connection getConnection() throws InterruptedException {
-        synchronized (existingConnectionsCount) {
-            LOGGER.info("Connection pool capacity: " + existingConnectionsCount + "/" + MAX_POOL_CAPACITY + ".");
+        LOGGER.info("Connection pool capacity: " + poolCount + "/" + MAX_POOL_CAPACITY + ".");
 
-            if (existingConnectionsCount < MAX_POOL_CAPACITY) {
+        synchronized (poolCount) {
+            if (poolCount < MAX_POOL_CAPACITY) {
                 LOGGER.info("Creating new connection.");
 
                 try {
-                    existingConnectionsCount++;
                     return DriverManager.getConnection(url, user, password);
                 } catch (Exception e) {
                     LOGGER.error(e);
@@ -68,19 +67,19 @@ public class ConnectionPool {
             }
         }
 
+        poolCount--;
         LOGGER.info("Retrieved connection from pool.");
         return pool.take();
     }
 
     public void releaseConnection(Connection con) {
-        synchronized (existingConnectionsCount) {
+        synchronized (poolCount) {
             if (pool.offer(con)) {
-                while (existingConnectionsCount < pool.size())
-                    existingConnectionsCount++;
-
-                LOGGER.info("Connection added to connection pool.");
+                LOGGER.info("Connection pooled.");
+                poolCount++;
             } else
-                LOGGER.error("Connection release failed; connection pool is full.");
+                LOGGER.error("Connection pooling failed: pool is full.");
+
         }
     }
 }
