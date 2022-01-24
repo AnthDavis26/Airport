@@ -33,7 +33,7 @@ public class UserService implements IUserService {
         List<Transaction> transactions = getTransactionsBy(user);
 
         for (Transaction tr : transactions)
-            services.add((Service) serviceDAO.getServiceById(tr.getServiceId()));
+            services.add((Service) serviceDAO.getEntityById(tr.getServiceId()));
 
         return services.stream().toList();
     }
