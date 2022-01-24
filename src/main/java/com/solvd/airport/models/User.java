@@ -1,5 +1,7 @@
 package com.solvd.airport.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.solvd.airport.utils.DateAdapter;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -13,10 +15,19 @@ import java.time.Period;
 @XmlRootElement(name="user")
 @XmlType (propOrder = {"id","firstName","lastName","dateOfBirth"})
 public class User {
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("firstName")
     private String firstName;
+
+    @JsonProperty("lastName")
     private String lastName;
+
+    @JsonProperty("dateOfBirth")
+    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate dateOfBirth;
+
 
     @Override
     public int hashCode() {
